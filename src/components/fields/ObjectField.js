@@ -40,7 +40,11 @@ class DefaultObjectFieldTemplate extends Component {
               className="panel-heading"
               onClick={evt => this.clickedPanel(evt)}>
               <h4 className="panel-title">
-                {this.props.uiSchema["ui:title"] || this.props.title}
+                <span
+                  className={`panel-toggle${this.state.isOpen ? " open" : ""}`}>
+                  {this.props.uiSchema["ui:title"] ||
+                    this.props.title || <span className="empty-title-field" />}
+                </span>
               </h4>
             </div>
             <div

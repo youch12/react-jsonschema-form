@@ -119,7 +119,10 @@ class DefaultFixedArrayFieldTemplate extends Component {
             className="panel-heading"
             onClick={evt => this.clickedPanel(evt)}>
             <h4 className="panel-title">
-              {this.props.uiSchema["ui:title"] || this.props.title}
+              <span
+                className={`panel-toggle${this.state.isOpen ? " open" : ""}`}>
+                {this.props.uiSchema["ui:title"] || this.props.title || "&#32;"}
+              </span>
             </h4>
           </div>
           <div
@@ -166,7 +169,10 @@ class DefaultNormalArrayFieldTemplate extends Component {
             className="panel-heading"
             onClick={evt => this.clickedPanel(evt)}>
             <h4 className="panel-title">
-              {this.props.uiSchema["ui:title"] || this.props.title}
+              <span
+                className={`panel-toggle${this.state.isOpen ? " open" : ""}`}>
+                {this.props.uiSchema["ui:title"] || this.props.title || "&#32;"}
+              </span>
             </h4>
           </div>
         </div>
