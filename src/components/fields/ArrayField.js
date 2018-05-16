@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+export const uuidv4 = require("uuid/v4");
 
 import UnsupportedField from "./UnsupportedField";
 import {
@@ -15,15 +16,6 @@ import {
   toIdSchema,
   getDefaultRegistry,
 } from "../../utils";
-
-function ArrayFieldTitle({ TitleField, idSchema, title, required }) {
-  if (!title) {
-    // See #312: Ensure compatibility with old versions of React.
-    return <div />;
-  }
-  const id = `${idSchema.$id}__title`;
-  return <TitleField id={id} title={title} required={required} />;
-}
 
 function ArrayFieldDescription({ DescriptionField, idSchema, description }) {
   if (!description) {
@@ -111,75 +103,83 @@ function DefaultArrayItem(props) {
 }
 
 function DefaultFixedArrayFieldTemplate(props) {
+  let randomValue = uuidv4();
   return (
-    <fieldset className={props.className}>
-      <ArrayFieldTitle
-        key={`array-field-title-${props.idSchema.$id}`}
-        TitleField={props.TitleField}
-        idSchema={props.idSchema}
-        title={props.uiSchema["ui:title"] || props.title}
-        required={props.required}
-      />
-
-      {(props.uiSchema["ui:description"] || props.schema.description) && (
-        <div
-          className="field-description"
-          key={`field-description-${props.idSchema.$id}`}>
-          {props.uiSchema["ui:description"] || props.schema.description}
+    <div className="panel-group">
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h4 className="panel-title">
+            <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
+              {props.uiSchema["ui:title"] || props.title || "Field"}
+            </a>
+          </h4>
         </div>
-      )}
+        <div id={`collapse-${randomValue}`} className="panel-collapse collapse">
+          <div className="panel-body">
+            <fieldset className={props.className}>
+              <div
+                className="row array-item-list"
+                key={`array-item-list-${props.idSchema.$id}`}>
+                {props.items && props.items.map(DefaultArrayItem)}
+              </div>
 
-      <div
-        className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}>
-        {props.items && props.items.map(DefaultArrayItem)}
+              {props.canAdd && (
+                <AddButton
+                  onClick={props.onAddClick}
+                  disabled={props.disabled || props.readonly}
+                />
+              )}
+            </fieldset>
+          </div>
+        </div>
       </div>
-
-      {props.canAdd && (
-        <AddButton
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
-      )}
-    </fieldset>
+    </div>
   );
 }
 
 function DefaultNormalArrayFieldTemplate(props) {
+  let randomValue = uuidv4();
   return (
-    <fieldset className={props.className}>
-      <ArrayFieldTitle
-        key={`array-field-title-${props.idSchema.$id}`}
-        TitleField={props.TitleField}
-        idSchema={props.idSchema}
-        title={props.uiSchema["ui:title"] || props.title}
-        required={props.required}
-      />
-
-      {(props.uiSchema["ui:description"] || props.schema.description) && (
-        <ArrayFieldDescription
-          key={`array-field-description-${props.idSchema.$id}`}
-          DescriptionField={props.DescriptionField}
-          idSchema={props.idSchema}
-          description={
-            props.uiSchema["ui:description"] || props.schema.description
-          }
-        />
-      )}
-
-      <div
-        className="row array-item-list"
-        key={`array-item-list-${props.idSchema.$id}`}>
-        {props.items && props.items.map(p => DefaultArrayItem(p))}
+    <div className="panel-group">
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h4 className="panel-title">
+            <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
+              {props.uiSchema["ui:title"] || props.title || "Field"}
+            </a>
+          </h4>
+        </div>
       </div>
+      <div id={`collapse-${randomValue}`} className="panel-collapse collapse">
+        <div className="panel-body">
+          <fieldset className={props.className}>
+            {(props.uiSchema["ui:description"] || props.schema.description) && (
+              <ArrayFieldDescription
+                key={`array-field-description-${props.idSchema.$id}`}
+                DescriptionField={props.DescriptionField}
+                idSchema={props.idSchema}
+                description={
+                  props.uiSchema["ui:description"] || props.schema.description
+                }
+              />
+            )}
 
-      {props.canAdd && (
-        <AddButton
-          onClick={props.onAddClick}
-          disabled={props.disabled || props.readonly}
-        />
-      )}
-    </fieldset>
+            <div
+              className="row array-item-list"
+              key={`array-item-list-${props.idSchema.$id}`}>
+              {props.items && props.items.map(p => DefaultArrayItem(p))}
+            </div>
+
+            {props.canAdd && (
+              <AddButton
+                onClick={props.onAddClick}
+                disabled={props.disabled || props.readonly}
+              />
+            )}
+          </fieldset>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -446,22 +446,40 @@ class ArrayField extends Component {
       enumOptions,
     };
     const Widget = getWidget(schema, widget, widgets);
+    const randomValue = uuidv4();
     return (
-      <Widget
-        id={idSchema && idSchema.$id}
-        multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        options={options}
-        schema={schema}
-        value={items}
-        disabled={disabled}
-        readonly={readonly}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
-      />
+      <div className="panel-group">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h4 className="panel-title">
+              <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
+                {"Field"}
+              </a>
+            </h4>
+          </div>
+          <div
+            id={`collapse-${randomValue}`}
+            className="panel-collapse collapse">
+            <div className="panel-body">
+              <Widget
+                id={idSchema && idSchema.$id}
+                multiple
+                onChange={this.onSelectChange}
+                onBlur={onBlur}
+                onFocus={onFocus}
+                options={options}
+                schema={schema}
+                value={items}
+                disabled={disabled}
+                readonly={readonly}
+                formContext={formContext}
+                autofocus={autofocus}
+                rawErrors={rawErrors}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 

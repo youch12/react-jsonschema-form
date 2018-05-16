@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+export const uuidv4 = require("uuid/v4");
 
 import {
   orderProperties,
@@ -8,17 +9,10 @@ import {
 } from "../../utils";
 
 function DefaultObjectFieldTemplate(props) {
-  const { TitleField, DescriptionField } = props;
-  return (
+  const { DescriptionField } = props;
+  let randomValue = uuidv4();
+  const objectTemplate = (
     <fieldset>
-      {(props.uiSchema["ui:title"] || props.title) && (
-        <TitleField
-          id={`${props.idSchema.$id}__title`}
-          title={props.title || props.uiSchema["ui:title"]}
-          required={props.required}
-          formContext={props.formContext}
-        />
-      )}
       {props.description && (
         <DescriptionField
           id={`${props.idSchema.$id}__description`}
@@ -29,6 +23,29 @@ function DefaultObjectFieldTemplate(props) {
       {props.properties.map(prop => prop.content)}
     </fieldset>
   );
+
+  const objectToRender =
+    Object.keys(props.schema.properties).length > 1 ? (
+      <div className="panel-group">
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h4 className="panel-title">
+              <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
+                {props.title || props.uiSchema["ui:title"] || "Field"}
+              </a>
+            </h4>
+          </div>
+          <div
+            id={`collapse-${randomValue}`}
+            className="panel-collapse collapse">
+            <div className="panel-body">{objectTemplate}</div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      objectTemplate
+    );
+  return objectToRender;
 }
 
 class ObjectField extends Component {
@@ -141,6 +158,7 @@ class ObjectField extends Component {
       formData,
       formContext,
     };
+
     return <Template {...templateProps} />;
   }
 }
