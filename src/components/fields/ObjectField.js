@@ -8,44 +8,54 @@ import {
   getDefaultRegistry,
 } from "../../utils";
 
-function DefaultObjectFieldTemplate(props) {
-  const { DescriptionField } = props;
-  let randomValue = uuidv4();
-  const objectTemplate = (
-    <fieldset>
-      {props.description && (
-        <DescriptionField
-          id={`${props.idSchema.$id}__description`}
-          description={props.description}
-          formContext={props.formContext}
-        />
-      )}
-      {props.properties.map(prop => prop.content)}
-    </fieldset>
-  );
+class DefaultObjectFieldTemplate extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { isOpen: false };
+  }
 
-  const objectToRender =
-    Object.keys(props.schema.properties).length > 1 ? (
-      <div className="panel-group">
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h4 className="panel-title">
-              <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
-                {props.title || props.uiSchema["ui:title"] || "Field"}
-              </a>
-            </h4>
-          </div>
-          <div
-            id={`collapse-${randomValue}`}
-            className="panel-collapse collapse">
-            <div className="panel-body">{objectTemplate}</div>
+  clickedPanel = evt => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  render() {
+    const { DescriptionField } = this.props;
+    const objectTemplate = (
+      <fieldset>
+        {this.props.description && (
+          <DescriptionField
+            id={`${this.props.idSchema.$id}__description`}
+            description={this.props.description}
+            formContext={this.props.formContext}
+          />
+        )}
+        {this.props.properties.map(prop => prop.content)}
+      </fieldset>
+    );
+    const objectToRender =
+      Object.keys(this.props.schema.properties).length > 1 ? (
+        <div className="panel-group">
+          <div className="panel panel-default">
+            <div
+              className="panel-heading"
+              onClick={evt => this.clickedPanel(evt)}>
+              <h4 className="panel-title">
+                {this.props.uiSchema["ui:title"] || this.props.title}
+              </h4>
+            </div>
+            <div
+              className={`panel-collapse collapse${
+                this.state.isOpen ? " in" : ""
+              }`}>
+              <div className="panel-body">{objectTemplate}</div>
+            </div>
           </div>
         </div>
-      </div>
-    ) : (
-      objectTemplate
-    );
-  return objectToRender;
+      ) : (
+        objectTemplate
+      );
+    return objectToRender;
+  }
 }
 
 class ObjectField extends Component {

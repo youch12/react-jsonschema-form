@@ -101,86 +101,113 @@ function DefaultArrayItem(props) {
     </div>
   );
 }
+class DefaultFixedArrayFieldTemplate extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { isOpen: false };
+  }
 
-function DefaultFixedArrayFieldTemplate(props) {
-  let randomValue = uuidv4();
-  return (
-    <div className="panel-group">
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <h4 className="panel-title">
-            <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
-              {props.uiSchema["ui:title"] || props.title || "Field"}
-            </a>
-          </h4>
+  clickedPanel = evt => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  render() {
+    return (
+      <div className="panel-group">
+        <div className="panel panel-default">
+          <div
+            className="panel-heading"
+            onClick={evt => this.clickedPanel(evt)}>
+            <h4 className="panel-title">
+              {this.props.uiSchema["ui:title"] || this.props.title}
+            </h4>
+          </div>
+          <div
+            className={`panel-collapse collapse${
+              this.state.isOpen ? " in" : ""
+            }`}>
+            <div className="panel-body">
+              <fieldset className={this.props.className}>
+                <div
+                  className="row array-item-list"
+                  key={`array-item-list-${this.props.idSchema.$id}`}>
+                  {this.props.items && this.props.items.map(DefaultArrayItem)}
+                </div>
+
+                {this.props.canAdd && (
+                  <AddButton
+                    onClick={this.props.onAddClick}
+                    disabled={this.props.disabled || this.props.readonly}
+                  />
+                )}
+              </fieldset>
+            </div>
+          </div>
         </div>
-        <div id={`collapse-${randomValue}`} className="panel-collapse collapse">
+      </div>
+    );
+  }
+}
+class DefaultNormalArrayFieldTemplate extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { isOpen: false };
+  }
+
+  clickedPanel = evt => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  render() {
+    return (
+      <div className="panel-group">
+        <div className="panel panel-default">
+          <div
+            className="panel-heading"
+            onClick={evt => this.clickedPanel(evt)}>
+            <h4 className="panel-title">
+              {this.props.uiSchema["ui:title"] || this.props.title}
+            </h4>
+          </div>
+        </div>
+        <div
+          className={`panel-collapse collapse${
+            this.state.isOpen ? " in" : ""
+          }`}>
           <div className="panel-body">
-            <fieldset className={props.className}>
+            <fieldset className={this.props.className}>
+              {(this.props.uiSchema["ui:description"] ||
+                this.props.schema.description) && (
+                <ArrayFieldDescription
+                  key={`array-field-description-${this.props.idSchema.$id}`}
+                  DescriptionField={this.props.DescriptionField}
+                  idSchema={this.props.idSchema}
+                  description={
+                    this.props.uiSchema["ui:description"] ||
+                    this.props.schema.description
+                  }
+                />
+              )}
+
               <div
                 className="row array-item-list"
-                key={`array-item-list-${props.idSchema.$id}`}>
-                {props.items && props.items.map(DefaultArrayItem)}
+                key={`array-item-list-${this.props.idSchema.$id}`}>
+                {this.props.items &&
+                  this.props.items.map(p => DefaultArrayItem(p))}
               </div>
 
-              {props.canAdd && (
+              {this.props.canAdd && (
                 <AddButton
-                  onClick={props.onAddClick}
-                  disabled={props.disabled || props.readonly}
+                  onClick={this.props.onAddClick}
+                  disabled={this.props.disabled || this.props.readonly}
                 />
               )}
             </fieldset>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function DefaultNormalArrayFieldTemplate(props) {
-  let randomValue = uuidv4();
-  return (
-    <div className="panel-group">
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <h4 className="panel-title">
-            <a data-toggle="collapse" href={`#collapse-${randomValue}`}>
-              {props.uiSchema["ui:title"] || props.title || "Field"}
-            </a>
-          </h4>
-        </div>
-      </div>
-      <div id={`collapse-${randomValue}`} className="panel-collapse collapse">
-        <div className="panel-body">
-          <fieldset className={props.className}>
-            {(props.uiSchema["ui:description"] || props.schema.description) && (
-              <ArrayFieldDescription
-                key={`array-field-description-${props.idSchema.$id}`}
-                DescriptionField={props.DescriptionField}
-                idSchema={props.idSchema}
-                description={
-                  props.uiSchema["ui:description"] || props.schema.description
-                }
-              />
-            )}
-
-            <div
-              className="row array-item-list"
-              key={`array-item-list-${props.idSchema.$id}`}>
-              {props.items && props.items.map(p => DefaultArrayItem(p))}
-            </div>
-
-            {props.canAdd && (
-              <AddButton
-                onClick={props.onAddClick}
-                disabled={props.disabled || props.readonly}
-              />
-            )}
-          </fieldset>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 class ArrayField extends Component {
