@@ -588,6 +588,7 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       onBlur,
       onFocus,
+      onEditClicked,
       rawErrors,
     } = this.props;
     const title = schema.title || name;
@@ -648,6 +649,7 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
+          onEditClicked,
         });
       }),
       onAddClick: this.onAddClick,
@@ -681,6 +683,7 @@ class ArrayField extends Component {
       onBlur,
       onFocus,
       rawErrors,
+      onEditClicked,
     } = props;
     const {
       disabled,
@@ -715,6 +718,7 @@ class ArrayField extends Component {
           onChange={this.onChangeForIndex(index)}
           onBlur={onBlur}
           onFocus={onFocus}
+          onEditClicked={onEditClicked}
           registry={this.props.registry}
           disabled={this.props.disabled}
           readonly={this.props.readonly}
