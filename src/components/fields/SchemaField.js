@@ -265,6 +265,7 @@ function SchemaFieldRender(props) {
     fields,
     schema,
     uiSchema,
+    onEditClicked: props.onEditClicked,
   };
 
   return (
