@@ -217,6 +217,7 @@ export default class Form extends Component {
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           registry={registry}
+          onEditClicked={values => this.props.onEditClicked(values)}
           safeRenderCompletion={safeRenderCompletion}
         />
         {children ? (
@@ -247,6 +248,7 @@ if (process.env.NODE_ENV !== "production") {
     FieldTemplate: PropTypes.func,
     ErrorList: PropTypes.func,
     onChange: PropTypes.func,
+    onEditClicked: PropTypes.func,
     onError: PropTypes.func,
     showErrorList: PropTypes.bool,
     onSubmit: PropTypes.func,

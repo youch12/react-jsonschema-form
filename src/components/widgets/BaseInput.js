@@ -16,6 +16,7 @@ function BaseInput(props) {
     onBlur,
     onFocus,
     options,
+    onEditClicked,
     schema,
     formContext,
     registry,
@@ -28,7 +29,7 @@ function BaseInput(props) {
   };
 
   const { rawErrors, ...cleanProps } = inputProps;
-  if (inputProps.type === "text") {
+  if (inputProps.type == "text") {
     return (
       <textarea
         className="form-control"

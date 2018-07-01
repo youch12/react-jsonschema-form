@@ -214,6 +214,7 @@ function SchemaFieldRender(props) {
       autofocus={autofocus}
       errorSchema={fieldErrorSchema}
       formContext={formContext}
+      onEditClicked={props.onEditClicked}
       rawErrors={__errors}
     />
   );
@@ -266,7 +267,11 @@ function SchemaFieldRender(props) {
     uiSchema,
   };
 
-  return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>;
+  return (
+    <FieldTemplate {...fieldProps} onEditClicked={props.onEditClicked}>
+      {field}
+    </FieldTemplate>
+  );
 }
 
 class SchemaField extends React.Component {

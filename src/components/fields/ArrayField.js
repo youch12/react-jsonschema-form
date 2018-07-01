@@ -123,6 +123,13 @@ class DefaultFixedArrayFieldTemplate extends Component {
                 className={`panel-toggle${this.state.isOpen ? " open" : ""}`}>
                 {this.props.uiSchema["ui:title"] || this.props.title || "&#32;"}
               </span>
+              <span
+                className="glyphicon glyphicon-edit"
+                onClick={e => {
+                  e.stopPropagation();
+                  this.props.onEditClicked(this.props);
+                }}
+              />
             </h4>
           </div>
           <div
@@ -173,6 +180,13 @@ class DefaultNormalArrayFieldTemplate extends Component {
                 className={`panel-toggle${this.state.isOpen ? " open" : ""}`}>
                 {this.props.uiSchema["ui:title"] || this.props.title || "&#32;"}
               </span>
+              <span
+                className="glyphicon glyphicon-edit"
+                onClick={e => {
+                  e.stopPropagation();
+                  this.props.onEditClicked(this.props);
+                }}
+              />
             </h4>
           </div>
         </div>
@@ -409,6 +423,7 @@ class ArrayField extends Component {
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items, definitions);
     const arrayProps = {
+      onEditClicked: this.props.onEditClicked,
       canAdd: this.canAddItem(formData),
       items: formData.map((item, index) => {
         const itemSchema = retrieveSchema(schema.items, definitions, item);
@@ -503,6 +518,7 @@ class ArrayField extends Component {
                 options={options}
                 schema={schema}
                 value={items}
+                onEditClicked={this.props.onEditClicked}
                 disabled={disabled}
                 readonly={readonly}
                 formContext={formContext}
@@ -548,6 +564,7 @@ class ArrayField extends Component {
         value={items}
         disabled={disabled}
         readonly={readonly}
+        onEditClicked={this.props.onEditClicked}
         formContext={formContext}
         autofocus={autofocus}
         rawErrors={rawErrors}
@@ -592,6 +609,7 @@ class ArrayField extends Component {
 
     // These are the props passed into the render function
     const arrayProps = {
+      onEditClicked: this.props.onEditClicked,
       canAdd: this.canAddItem(items) && additionalSchema,
       className: "field field-array field-array-fixed-items",
       disabled,

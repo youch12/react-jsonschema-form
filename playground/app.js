@@ -473,6 +473,9 @@ class App extends Component {
               onFocus={(id, value) =>
                 console.log(`Focused ${id} with value ${value}`)
               }
+              onEditClicked={values =>
+                console.log("Clicked an element to edit with values: ", values)
+              }
               transformErrors={transformErrors}
               onError={log("errors")}>
               <div className="row">

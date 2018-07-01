@@ -45,8 +45,16 @@ class DefaultObjectFieldTemplate extends Component {
                   {this.props.uiSchema["ui:title"] ||
                     this.props.title || <span className="empty-title-field" />}
                 </span>
+                <span
+                  className="glyphicon glyphicon-edit"
+                  onClick={e => {
+                    e.stopPropagation();
+                    this.props.onEditClicked(this.props);
+                  }}
+                />
               </h4>
             </div>
+
             <div
               className={`panel-collapse collapse${
                 this.state.isOpen ? " in" : ""
@@ -138,6 +146,7 @@ class ObjectField extends Component {
       description,
       TitleField,
       DescriptionField,
+      onEditClicked: this.props.onEditClicked,
       properties: orderedProperties.map(name => {
         return {
           content: (
@@ -150,6 +159,7 @@ class ObjectField extends Component {
               errorSchema={errorSchema[name]}
               idSchema={idSchema[name]}
               idPrefix={idPrefix}
+              onEditClicked={this.props.onEditClicked}
               formData={formData[name]}
               onChange={this.onPropertyChange(name)}
               onBlur={onBlur}
@@ -184,6 +194,7 @@ if (process.env.NODE_ENV !== "production") {
     errorSchema: PropTypes.object,
     idSchema: PropTypes.object,
     onChange: PropTypes.func.isRequired,
+    onEditClicked: PropTypes.func.isRequired,
     formData: PropTypes.object,
     required: PropTypes.bool,
     disabled: PropTypes.bool,
