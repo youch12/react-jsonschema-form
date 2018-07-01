@@ -28,20 +28,39 @@ function BaseInput(props) {
   };
 
   const { rawErrors, ...cleanProps } = inputProps;
-
-  return (
-    <input
-      className="form-control"
-      readOnly={readonly}
-      disabled={disabled}
-      autoFocus={autofocus}
-      value={value == null ? "" : value}
-      {...cleanProps}
-      onChange={_onChange}
-      onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
-    />
-  );
+  if (inputProps.type === "text") {
+    return (
+      <textarea
+        className="form-control"
+        readOnly={readonly}
+        disabled={disabled}
+        autoFocus={autofocus}
+        value={value == null ? "" : value}
+        {...cleanProps}
+        onChange={_onChange}
+        onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
+        onFocus={
+          onFocus && (event => onFocus(inputProps.id, event.target.value))
+        }
+      />
+    );
+  } else {
+    return (
+      <input
+        className="form-control"
+        readOnly={readonly}
+        disabled={disabled}
+        autoFocus={autofocus}
+        value={value == null ? "" : value}
+        {...cleanProps}
+        onChange={_onChange}
+        onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
+        onFocus={
+          onFocus && (event => onFocus(inputProps.id, event.target.value))
+        }
+      />
+    );
+  }
 }
 
 BaseInput.defaultProps = {
