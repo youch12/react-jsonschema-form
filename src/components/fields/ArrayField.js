@@ -448,6 +448,7 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
+          onEditClicked: this.props.onEditClicked,
         });
       }),
       className: `field field-array field-array-of-${itemsSchema.type}`,
@@ -588,7 +589,6 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
       onBlur,
       onFocus,
-      onEditClicked,
       rawErrors,
     } = this.props;
     const title = schema.title || name;
@@ -649,7 +649,7 @@ class ArrayField extends Component {
           autofocus: autofocus && index === 0,
           onBlur,
           onFocus,
-          onEditClicked,
+          onEditClicked: this.props.onEditClicked,
         });
       }),
       onAddClick: this.onAddClick,
